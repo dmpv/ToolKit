@@ -1,20 +1,13 @@
 //
-//  misc.swift
-//  ContestKit
+//  File.swift
+//  
 //
-//  Created by Dmitry Purtov on 25.01.2021.
+//  Created by Dmitry Purtov on 07.07.2021.
 //
 
 import Foundation
 
-public protocol CKIdentifiable {
-    associatedtype ID: Hashable
-
-    var id: Self.ID { get }
-}
-
-
-extension Array where Element: CKIdentifiable {
+extension Array where Element: Identifiable {
     public subscript(safe id: Element.ID) -> Element? {
         get {
             let elements = filter { $0.id == id }
@@ -56,21 +49,5 @@ extension Array where Element: Equatable {
         reduce([]) { partialUnique, element in
             partialUnique.contains(element) ? partialUnique : partialUnique + [element]
         }
-    }
-}
-
-public protocol StateType: ValueType, Equatable {}
-
-public protocol IDType: ValueType, Hashable {}
-
-public class L10n: Namespace {
-    public static func stub(_ string: String) -> String {
-        NSLocalizedString(string, comment: "")
-    }
-}
-
-class Stub: Namespace {
-    static func make<ValueT>(_ value: ValueT) -> ValueT {
-        value
     }
 }

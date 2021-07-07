@@ -1,30 +1,12 @@
 //
-//  ui.misc.swift
-//  ContestKit
+//  UI+extensions.swift
+//  
 //
-//  Created by Dmitry Purtov on 28.01.2021.
+//  Created by Dmitry Purtov on 08.07.2021.
 //
 
 import Foundation
 import UIKit
-
-public typealias Style<ViewT> = (ViewT) -> Void
-
-public protocol Styleable {}
-
-public extension Styleable {
-    @discardableResult
-    func applying(_ style: Style<Self>) -> Self {
-        style(self)
-        return self
-    }
-}
-
-extension NSObject: Styleable {}
-
-public let noAutoresize: Style<UIView> = {
-    $0.translatesAutoresizingMaskIntoConstraints = false
-}
 
 extension UIEdgeInsets: ValueType {}
 
@@ -78,15 +60,6 @@ extension UIView {
     }
 }
 
-//func perform(animatedTransition: Bool, with view: UIView, execute: @escaping () -> Void) {
-//    UIView.transition(
-//        with: topTooltipLabel,
-//        duration: 0.2,
-//        options: .transitionFlipFromLeft,
-//        animations: { [self] in
-//
-//        },
-//        completion: nil
-//    )
-//    perform(with: animated ? AnimationConfig() : nil, execute: execute)
-//}
+public let noAutoresize: Setuper<UIView> = {
+    $0.translatesAutoresizingMaskIntoConstraints = false
+}
