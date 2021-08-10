@@ -1,12 +1,15 @@
 //
-//  UI+extensions.swift
-//  
+//  UI+Extensions.swift
+//  ToolKit
 //
-//  Created by Dmitry Purtov on 08.07.2021.
+//  Created by Dmitry Purtov on 19.04.2020.
+//  Copyright © 2020 djpurtov. All rights reserved.
 //
 
 import Foundation
 import UIKit
+
+import GenKit
 
 extension UIEdgeInsets: ValueType {}
 
@@ -20,30 +23,32 @@ extension UIEdgeInsets {
     }
 }
 
-func perform(animated: Bool, execute: @escaping () -> Void) {
+public func perform(animated: Bool, execute: @escaping () -> Void) {
     perform(with: animated ? AnimationConfig() : nil, execute: execute)
 }
 
-func perform(with animationConfig: AnimationConfig?, execute: @escaping () -> Void) {
+public func perform(with animationConfig: AnimationConfig?, execute: @escaping () -> Void) {
     if let animationConfig = animationConfig {
         UIView.animate(with: animationConfig) { execute() }
     } else {
-        execute()
+        UIView.performWithoutAnimation {
+            execute()
+        }
     }
 }
 
-struct AnimationConfig {
+public struct AnimationConfig: AutoMakeable {
     var options: UIView.AnimationOptions = [
         .curveEaseInOut,
         .beginFromCurrentState,
         .allowUserInteraction,
     ]
     var duration: Duration = .medium
-    var delay: TimeInterval = 0
+    var delay: DispatchTimeInterval = .seconds(0)
 }
 
 extension AnimationConfig {
-    enum Duration: TimeInterval {
+    public enum Duration: TimeInterval {
         case short = 0.2
         case medium = 0.4
         case long = 0.6
@@ -52,7 +57,13 @@ extension AnimationConfig {
 
 extension UIView {
     static func animate(with config: AnimationConfig, animations: @escaping () -> Void) {
-        animate(withDuration: config.duration.rawValue, delay: config.delay, options: config.options, animations: animations, completion: nil)
+        animate(
+            withDuration: config.duration.rawValue,
+            delay: config.delay.seconds,
+            options: config.options,
+            animations: animations,
+            completion: nil
+        )
     }
 
     public static func animate(with animations: @escaping () -> Void) {

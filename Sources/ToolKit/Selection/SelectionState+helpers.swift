@@ -1,8 +1,9 @@
 //
 //  SelectionState+helpers.swift
-//  ContestKit
+//  ToolKit
 //
-//  Created by Dmitry Purtov on 31.01.2021.
+//  Created by Dmitry Purtov on 19.04.2020.
+//  Copyright © 2020 djpurtov. All rights reserved.
 //
 
 import Foundation
